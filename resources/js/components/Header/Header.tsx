@@ -8,18 +8,20 @@ import styles from './Header.module.css';
 
 /** Inertia navigates for paths that stay inside the app (e.g. /blog),
  *  but hash anchors inside the current document need a plain <a>. */
+type NavLinkProps = {
+  href: string;
+  className?: string;
+  children: React.ReactNode;
+  onClick?: (event: React.MouseEvent<Element>) => void;
+} & React.AriaAttributes;
+
 function NavLink({
   href,
   className,
   children,
   onClick,
   ...props
-}: {
-  href: string;
-  className?: string;
-  children: React.ReactNode;
-  onClick?: () => void;
-} & React.AnchorHTMLAttributes<HTMLAnchorElement>) {
+}: NavLinkProps) {
   if (href.startsWith('#')) {
     return (
       <a href={href} className={className} onClick={onClick} {...props}>
@@ -129,7 +131,6 @@ return;
             const hasPreview =
               link.href.includes('#projects') || link.href === '/blog';
               const isBlog = link.href === '/blog';
-              const isProject = link.href.includes('#projects');
 
               const isActive =
                 link.href === '/blog'
@@ -254,3 +255,5 @@ return;
     </header>
   );
 }
+
+

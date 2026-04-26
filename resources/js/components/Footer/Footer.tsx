@@ -1,4 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
+import type { ReactElement } from 'react';
 import { useTranslation } from '@/i18n/LanguageProvider';
 import type { ThemePreference } from '@/types';
 import styles from './Footer.module.css';
@@ -181,7 +182,7 @@ function ThemeSwitcher({ preference, onSelect }: ThemeSwitcherProps) {
   const options: {
     value: ThemePreference;
     labelKey: string;
-    icon: JSX.Element;
+    icon: ReactElement;
   }[] = [
     { value: 'system', labelKey: 'footer.theme_system', icon: <SystemIcon /> },
     { value: 'light', labelKey: 'footer.theme_light', icon: <SunIcon /> },
@@ -272,3 +273,4 @@ function MoonIcon() {
     </svg>
   );
 }
+
