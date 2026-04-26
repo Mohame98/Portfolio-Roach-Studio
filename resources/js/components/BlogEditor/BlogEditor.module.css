@@ -1,0 +1,200 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.wrap:focus-within {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  padding: 8px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.group {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 6px;
+}
+
+.toolBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 30px;
+  padding: 0 8px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.toolBtn:hover:not(:disabled) {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.toolBtn[data-active='true'] {
+  color: var(--text);
+  background: var(--surface-strong);
+  border-color: var(--border);
+}
+
+.toolBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.editor {
+  padding: 20px clamp(16px, 3vw, 28px);
+  min-height: 360px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.loading {
+  padding: 28px;
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+
+/* The actual contenteditable surface — TipTap slots its DOM inside
+ * .editor and labels it .content via editorProps.attributes. */
+.content {
+  outline: none;
+  min-height: 300px;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.content > * + * {
+  margin-top: 1em;
+}
+
+.content h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin-top: 1.6em;
+  margin-bottom: 0.3em;
+}
+
+.content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 1.4em;
+  margin-bottom: 0.3em;
+}
+
+.content h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 1.2em;
+  margin-bottom: 0.3em;
+}
+
+.content p {
+  margin: 0;
+}
+
+.content ul,
+.content ol {
+  padding-left: 22px;
+  margin: 0;
+}
+
+.content li + li {
+  margin-top: 0.35em;
+}
+
+.content blockquote {
+  padding: 6px 0 6px 16px;
+  border-left: 3px solid var(--border-strong);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.content code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  padding: 2px 6px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+}
+
+.content pre {
+  padding: 14px 16px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  line-height: 1.55;
+  overflow-x: auto;
+}
+
+.content pre code {
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.content a {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--success) 65%, transparent);
+  text-underline-offset: 3px;
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.content hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 1.4em 0;
+}
+
+/* TipTap placeholder styling — empty p gets a data attribute with the text */
+.content p.is-editor-empty:first-child::before {
+  color: var(--text-subtle);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

@@ -1,0 +1,228 @@
+.shell {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+}
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: saturate(140%) blur(12px);
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.barInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 60px;
+  padding: 0 clamp(16px, 3vw, 24px);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.user {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.userName {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.roleBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.roleBadge[data-role='super_admin'] {
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 45%, var(--border));
+  background: color-mix(in srgb, var(--success-soft) 70%, var(--surface));
+}
+
+.roleBadge[data-role='admin'] {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.roleDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 22%, transparent);
+}
+
+.roleBadge[data-role='super_admin'] .roleDot {
+  animation: adminRolePulse 1.8s var(--ease-out) infinite;
+}
+
+@keyframes adminRolePulse {
+  0% {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--success) 22%, transparent),
+      0 0 0 3px color-mix(in srgb, var(--success) 55%, transparent);
+  }
+  70% {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--success) 22%, transparent),
+      0 0 0 10px color-mix(in srgb, var(--success) 0%, transparent);
+  }
+  100% {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--success) 22%, transparent),
+      0 0 0 10px color-mix(in srgb, var(--success) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roleBadge[data-role='super_admin'] .roleDot {
+    animation: none;
+  }
+}
+
+.viewSite,
+.logout {
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.viewSite:hover,
+.logout:hover {
+  background: var(--surface);
+  border-color: var(--border-strong);
+}
+
+.body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.sidebar {
+  border-right: 1px solid var(--border);
+  padding: 24px 12px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: sticky;
+  top: 80px;
+}
+
+.navLink {
+  padding: 8px 14px;
+  font-size: 13.5px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.navLink:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+
+.navLink[data-active='true'] {
+  color: var(--text);
+  background: var(--surface);
+  font-weight: 500;
+  /* box-shadow: inset 2px 0 0 var(--text); */
+}
+
+.main {
+  padding: clamp(24px, 3vw, 36px) 0 clamp(48px, 8vw, 96px);
+  min-width: 0;
+}
+
+.container {
+  padding: 0 clamp(16px, 3vw, 24px);
+  min-width: 0;
+}
+
+@media (max-width: 800px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 8px;
+  }
+
+  .nav {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 2px;
+  }
+
+  .userName {
+    display: none;
+  }
+}

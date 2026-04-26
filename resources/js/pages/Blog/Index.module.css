@@ -1,0 +1,487 @@
+/* -----------------------------------------------------------------------
+ * Blog index — list of posts with category tabs + search + sort.
+ * Card design matches the reference: left-side accent bar, date / category /
+ * read-time meta, title, excerpt, green "Read more →" affordance that
+ * animates on hover. Hover lift is subtle; the whole card is the hit target.
+ * ----------------------------------------------------------------------- */
+
+.page {
+  background: var(--bg);
+  color: var(--text);
+  min-height: calc(100dvh - 68px);
+}
+
+.hero {
+  padding: clamp(56px, 8vw, 96px) 0 clamp(28px, 4vw, 40px);
+  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(
+      900px 400px at 20% -10%,
+      color-mix(in srgb, var(--hot) 14%, transparent),
+      transparent 60%
+    ),
+    var(--bg);
+}
+
+.heroInner {
+  max-width: var(--container-max);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 18px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--success) 22%, transparent);
+  animation: blogDotPulse 1.8s var(--ease-out) infinite;
+}
+
+.heading {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  margin: 0 0 18px;
+}
+
+.lede {
+  font-size: clamp(16px, 1.6vw, 18px);
+  color: var(--text-muted);
+  max-width: 62ch;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* --------------------------------- filters ------------------------------- */
+
+.filters {
+  position: sticky;
+  top: 68px;
+  z-index: 10;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: saturate(140%) blur(12px);
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.filtersInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+      padding-inline: var(--container-gutter);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tab {
+  --tab-accent: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.tab:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+
+.tab[data-active='true'] {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border-strong);
+}
+
+.tabDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tab-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--tab-accent) 22%, transparent);
+  animation: blogDotPulse 1.8s var(--ease-out) infinite;
+}
+
+@keyframes blogDotPulse {
+  0% {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--success) 22%, transparent),
+      0 0 0 4px color-mix(in srgb, var(--success) 55%, transparent);
+  }
+  70% {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--success) 22%, transparent),
+      0 0 0 14px color-mix(in srgb, var(--success) 0%, transparent);
+  }
+  100% {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--success) 22%, transparent),
+      0 0 0 14px color-mix(in srgb, var(--success) 0%, transparent);
+  }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.searchLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+  transition: border-color var(--dur-fast) var(--ease-out);
+  min-width: 220px;
+}
+
+.searchLabel:focus-within {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.searchInput {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+}
+
+.searchInput::placeholder {
+  color: var(--text-subtle);
+}
+
+.sortLabel {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 26px 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.sortLabel:hover,
+.sortLabel:focus-within {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.sortSelect {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 2px;
+  cursor: pointer;
+}
+
+.sortChevron {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+}
+
+/* ---------------------------------- list --------------------------------- */
+
+.list {
+  padding: clamp(28px, 5vw, 43px) 0 clamp(56px, 8vw, 120px);
+}
+
+.listInner {
+  max-width: var(--container-max);
+  /* padding: 30px;
+  padding-inline: var(--container-gutter); */
+}
+
+/* .listInner:hover{
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  transform: scaleX(1);
+} */
+
+.cards {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: 0.4s;
+}
+
+/* .cardWrap + .cardWrap {
+  border-top: 1px solid var(--border);
+} */
+
+.cardWrap{
+  margin-bottom: 10px;
+}
+
+.card {
+  --card-accent: var(--text-muted);
+  position: relative;
+  /* display: grid;
+  grid-template-columns: 4px 1fr;
+  gap: 20px; */
+  /* padding: 28px 16px 28px 0; */
+  color: inherit;
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease-out);
+  border-radius: 0;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border-radius: var(--radius-md);
+  transform: scaleX(0.98);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* .card:hover::before {
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  transform: scaleX(1);
+} */
+
+.card:focus-visible {
+  outline: none;
+}
+
+.card:focus-visible::before {
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: var(--ring);
+}
+
+/* .cardBar {
+  position: relative;
+  z-index: 1;
+  width: 4px;
+  background: var(--card-accent);
+  border-radius: 999px;
+  transition: box-shadow var(--dur-fast) var(--ease-out);
+} */
+
+.card:hover .cardBar {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--card-accent) 30%, transparent);
+}
+
+.cardBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+.card:hover .cardBody {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.cardMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.cardCategory {
+  color: var(--card-accent);
+  font-weight: 500;
+}
+
+.cardTitle {
+  font-size: clamp(22px, 2.6vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin: 2px 0 2px;
+  color: var(--text);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.card:hover .cardTitle {
+  color: var(--text);
+}
+
+.cardExcerpt {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 68ch;
+}
+
+.cardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  color: var(--success);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+}
+
+.cardCtaArrow {
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.card:hover .cardCtaArrow {
+  transform: translateX(4px);
+}
+
+/* -------------------------------- pagination ----------------------------- */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: clamp(40px, 6vw, 64px);
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.pageLink {
+  color: var(--text);
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.pageLink:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+
+.pageLinkDisabled {
+  color: var(--text-subtle);
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  opacity: 0.5;
+}
+
+.pageInfo {
+  color: var(--text-muted);
+}
+
+.empty {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* --------------------------------- mobile -------------------------------- */
+
+@media (max-width: 720px) {
+  .filters {
+    position: static;
+  }
+
+  .filtersInner {
+    gap: 12px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls {
+    gap: 8px;
+  }
+
+  .searchLabel {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card {
+    padding: 22px 12px 22px 0;
+  }
+}
+
+/* --------------------------- reduced motion ------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .card::before,
+  .cardBar,
+  .cardTitle,
+  .cardCtaArrow,
+  .pageLink {
+    transition: none;
+  }
+
+  .card:hover .cardCtaArrow {
+    transform: none;
+  }
+
+  .eyebrow::before,
+  .tabDot {
+    animation: none;
+  }
+}

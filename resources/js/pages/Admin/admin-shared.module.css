@@ -1,0 +1,290 @@
+/* Shared primitives used by every admin sub-page (Review, Categories,
+ * Users, Invitations, Audit). Keeps the look consistent without forcing
+ * every page to reimplement the table chrome.
+ */
+
+.topbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.heading {
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0 0 6px;
+}
+
+.sub {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  max-width: 56ch;
+}
+
+.flash {
+  padding: 10px 14px;
+  margin: 0 0 20px;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--success) 16%, transparent);
+  color: var(--text);
+  font-size: 13.5px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.errorFlash {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.empty {
+  padding: 48px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: var(--text-muted);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.table th,
+.table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table thead th {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--surface);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table tbody tr:hover {
+  background: var(--surface);
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.actionsCol {
+  text-align: right;
+}
+
+.actionLink,
+.actionBtn,
+.actionDanger {
+  padding: 6px 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+  border-radius: var(--radius-xs);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  color: var(--text);
+  font-family: inherit;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.actionLink:hover,
+.actionBtn:hover {
+  background: var(--surface-hover);
+}
+
+.actionDanger {
+  color: var(--danger);
+}
+
+.actionDanger:hover {
+  background: var(--danger-soft);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.pill[data-tone='success'] {
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 45%, var(--border));
+  background: color-mix(in srgb, var(--success-soft) 70%, var(--surface));
+}
+
+.pill[data-tone='warn'] {
+  color: var(--accent, #ffae3a);
+  border-color: color-mix(in srgb, var(--accent, #ffae3a) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent, #ffae3a) 14%, transparent);
+}
+
+.pill[data-tone='danger'] {
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--border));
+  background: var(--danger-soft);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.pageLink {
+  color: var(--text);
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+
+.pageLink:hover {
+  background: var(--surface);
+}
+
+.pageDisabled {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  opacity: 0.5;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.cardHeading {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) auto;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 9px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font: inherit;
+  font-size: 13.5px;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--border-strong);
+  box-shadow: var(--ring);
+}
+
+.primary {
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid var(--text);
+  background: var(--text);
+  color: var(--accent-contrast);
+  font-family: inherit;
+}
+
+.primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  font-size: 12.5px;
+  color: var(--danger);
+}
+
+.metaCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metaPrimary {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.metaSecondary {
+  color: var(--text-muted);
+  font-size: 12px;
+}

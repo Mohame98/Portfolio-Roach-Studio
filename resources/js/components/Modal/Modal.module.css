@@ -1,0 +1,221 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 40px);
+  background: color-mix(in srgb, var(--bg-inset) 72%, transparent);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  animation: backdropIn var(--dur-base) var(--ease-out);
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.panel {
+  position: relative;
+  width: 100%;
+  max-height: 92dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-elevated);
+  /* border: 1px solid var(--border-strong); */
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--border-glow);
+  overflow: hidden;
+  animation: panelIn var(--dur-slow) var(--ease-out);
+}
+
+.panel[data-size='md'] {
+  max-width: 560px;
+}
+
+.panel[data-size='lg'] {
+  max-width: 920px;
+}
+
+.panel[data-size='xl'] {
+  max-width: 1200px;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.headingStack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.headerActions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: color var(--dur-base), background var(--dur-base),
+    border-color var(--dur-base);
+}
+
+.close:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0;
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 245, 244, 0.18) transparent;
+}
+
+/* ---------- Cycle-through nav (prev/next subject) ---------- */
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  transition: transform var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+  z-index: 105;
+}
+
+.nav:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-glow);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.nav:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.navPrev {
+  left: clamp(10px, 2vw, 28px);
+}
+
+.navNext {
+  right: clamp(10px, 2vw, 28px);
+}
+
+@media (max-width: 720px) {
+  .nav {
+    width: 42px;
+    height: 42px;
+  }
+  .navPrev {
+    left: 8px;
+  }
+  .navNext {
+    right: 8px;
+  }
+}
+
+[data-theme='light'] .body {
+  scrollbar-color: rgba(10, 10, 11, 0.22) transparent;
+}
+
+.body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+}
+
+.body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: rgba(245, 245, 244, 0.14);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background 180ms ease-out;
+}
+
+.body::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 245, 244, 0.28);
+  background-clip: padding-box;
+}
+
+.body::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+[data-theme='light'] .body::-webkit-scrollbar-thumb {
+  background: rgba(10, 10, 11, 0.18);
+  background-clip: padding-box;
+}
+
+[data-theme='light'] .body::-webkit-scrollbar-thumb:hover {
+  background: rgba(10, 10, 11, 0.34);
+  background-clip: padding-box;
+}

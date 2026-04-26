@@ -1,0 +1,133 @@
+.section {
+  position: relative;
+  padding: clamp(80px, 12vw, 160px) 0 clamp(60px, 8vw, 100px);
+  overflow: hidden;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  animation: heroEnter 1s var(--ease-out) both;
+}
+
+@keyframes heroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.eyebrow {
+  animation: heroEnter 800ms var(--ease-out) both;
+}
+
+.heading {
+  font-size: clamp(2.6rem, 7vw, 5.25rem);
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  font-weight: 100;
+  animation: heroEnter 1s var(--ease-out) 80ms both;
+}
+
+.accent {
+  background: linear-gradient(135deg, var(--accent), var(--hot));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lede {
+  font-size: clamp(1.02rem, 1.5vw, 0.2rem);
+  color: var(--text-muted);
+  max-width: 60ch;
+  animation: heroEnter 1s var(--ease-out) 180ms both;
+}
+
+.ctas {
+  display: inline-flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+  animation: heroEnter 1s var(--ease-out) 260ms both;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-7) 0 0;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+  animation: heroEnter 1s var(--ease-out) 360ms both;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statItem dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.statItem dd {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.015em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--success) 22%, transparent);
+  animation: heroDotPulse 1.8s var(--ease-out) infinite;
+}
+
+@keyframes heroDotPulse {
+  0% {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--success) 22%, transparent),
+      0 0 0 4px color-mix(in srgb, var(--success) 55%, transparent);
+  }
+  70% {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--success) 22%, transparent),
+      0 0 0 14px color-mix(in srgb, var(--success) 0%, transparent);
+  }
+  100% {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--success) 22%, transparent),
+      0 0 0 14px color-mix(in srgb, var(--success) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+  }
+}

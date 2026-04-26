@@ -1,0 +1,252 @@
+.inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-10);
+  }
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.heading {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.dim {
+  background: linear-gradient(135deg, var(--accent), var(--hot));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lede {
+  max-width: 54ch;
+  font-size: 1.05rem;
+}
+
+.highlights {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-3) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.highlights li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14.5px;
+  color: var(--text-muted);
+}
+
+.highlights li svg {
+  color: var(--hot);
+  flex-shrink: 0;
+}
+
+.actions {
+  display: inline-flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-4);
+}
+
+/* ---------- Preview ---------- */
+.previewWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.preview {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 8.5 / 11;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: transform var(--dur-base);
+  perspective: 1000px;
+}
+
+.preview:hover {
+  transform: translateY(-4px);
+}
+
+.previewFrame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fafaf8;
+  border: 0;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.preview:hover .previewFrame {
+  transform: rotate(0deg);
+}
+
+.previewPdf {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fafaf8;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Rendered beneath the iframe — visible if the PDF host blocks framing. */
+.previewFallback {
+  position: absolute;
+  inset: 0;
+  padding: clamp(28px, 8%, 56px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: linear-gradient(180deg, #ffffff, #efefed);
+  z-index: 0;
+}
+
+.previewDocLine {
+  height: 10px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #d8d7d3 0%, #e4e3df 50%, #d8d7d3 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.previewOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-4);
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg) 0%, transparent) 40%,
+    color-mix(in srgb, var(--bg) 80%, transparent) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-base);
+  pointer-events: none;
+}
+
+.preview:hover .previewOverlay,
+.preview:focus-visible .previewOverlay {
+  opacity: 1;
+}
+
+.previewBadge {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+}
+
+.previewMeta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--bg-elevated) 80%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(6px);
+}
+
+.previewDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--success) 70%, transparent);
+}
+
+.preview:hover .previewDot,
+.preview:focus-visible .previewDot {
+  animation: previewDotPulse 1.6s ease-out infinite;
+}
+
+@keyframes previewDotPulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--success) 70%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--success) 0%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--success) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview:hover .previewDot,
+  .preview:focus-visible .previewDot {
+    animation: none;
+  }
+}
+
+/* ---------- Modal viewer ---------- */
+.modalViewer {
+  width: 100%;
+  height: min(80dvh, 1200px);
+  background: var(--bg-inset);
+}
+
+.modalPdf {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: var(--bg-inset);
+}
+
+.modalFallback {
+  padding: var(--space-7);
+  color: var(--text-muted);
+  font-size: 14px;
+}
+

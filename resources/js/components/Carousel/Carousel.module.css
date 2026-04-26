@@ -1,0 +1,270 @@
+.root {
+  position: relative;
+  width: 100%;
+}
+
+.root:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+  border-radius: var(--radius-md);
+}
+
+.viewport {
+  position: relative;
+}
+
+.track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  border-radius: var(--radius-md);
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  aspect-ratio: 19 / 10;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+}
+
+.slide > * {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Peek mode: single centered slide with neighbour peek ---------- */
+/* Full-bleed: viewport spans the window, padding-inline centers the active
+   slide at any width, and inactive neighbours fade out via mask-image. */
+
+.peek {
+  --peek-slide-max: 960px;
+  --peek-slide: min(88vw, var(--peek-slide-max));
+  --peek-gap: clamp(16px, 2vw, 28px);
+  --peek-pad: max(6vw, calc((100vw - var(--peek-slide-max)) / 2));
+}
+
+.peek .viewport {
+  /* Soft fade at the left/right edges so the cut-off neighbour slides
+     blur into the page background instead of slicing off abruptly. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 14%,
+    #000 86%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 14%,
+    #000 86%,
+    transparent 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.peek .track {
+  gap: var(--peek-gap);
+  padding-inline: var(--peek-pad);
+  /* Extra vertical room so hover lift + card shadow aren't clipped
+     by the scroll container. Cannot mix overflow-x:auto with
+     overflow-y:visible (spec forbids it), so we reserve space
+     inside the track instead. */
+  padding-block: clamp(24px, 3vw, 44px);
+  border-radius: 0;
+}
+
+@media (hover: hover) {
+  .peek .track {
+    cursor: grab;
+  }
+}
+
+.peek .slide {
+  flex: 0 0 var(--peek-slide);
+  scroll-snap-align: center;
+  aspect-ratio: auto;
+  background: transparent;
+  border: 0;
+  overflow: visible;
+  transition: transform var(--dur-slow) var(--ease-out),
+    opacity var(--dur-slow) var(--ease-out);
+  opacity: 0.45;
+  transform: scale(0.97);
+}
+
+.peek .slide[data-active='true'] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 640px) {
+  .peek {
+    --peek-slide: 94vw;
+    --peek-pad: 3vw;
+    --peek-gap: 12px;
+  }
+  .peek .viewport {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+  }
+}
+
+/* ---------- Overlay arrows (floating on hover) ---------- */
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: color-mix(in srgb, var(--bg-elevated) 82%, transparent);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform var(--dur-base), background var(--dur-base),
+    opacity var(--dur-base);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.root:hover .arrow {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.arrow:hover {
+  transform: translateY(-50%) scale(1.06);
+  background: var(--bg-elevated);
+}
+
+.prev {
+  left: 14px;
+}
+
+.next {
+  right: 14px;
+}
+
+/* ---------- Below-center round controls ---------- */
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.arrowRound {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  transition: background var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+}
+
+.arrowRound:hover {
+  background: var(--surface);
+  border-color: var(--border-glow);
+  transform: translateY(-1px);
+}
+
+.arrowRound:active {
+  transform: translateY(0);
+  background: var(--surface-hover);
+}
+
+/* ---------- Dots ---------- */
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--space-4);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--surface-strong);
+  border: 0;
+  transition: width var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out);
+}
+
+[data-theme='light'] .dot {
+  background: rgba(10, 10, 11, 0.22);
+}
+
+[data-theme='light'] .dot:hover {
+  background: rgba(10, 10, 11, 0.42);
+}
+
+.dot[data-active='true'] {
+  background: var(--accent);
+  width: 22px;
+  border-radius: var(--radius-pill);
+}
+
+[data-theme='light'] .dot[data-active='true'] {
+  background: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .arrow {
+    opacity: 1;
+    pointer-events: auto;
+    width: 36px;
+    height: 36px;
+  }
+  .arrowRound {
+    width: 42px;
+    height: 42px;
+  }
+}
