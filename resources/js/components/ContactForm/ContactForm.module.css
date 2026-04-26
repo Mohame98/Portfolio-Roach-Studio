@@ -131,16 +131,32 @@
 }
 
 .turnstile {
-  min-height: 65px;
+  /* min-height: 65px; */
   display: flex;
   align-items: center;
+  justify-content: start;
+  width: 1px;
+}
+
+@media only screen and (max-width: 400px) {
+  .turnstile {
+    transform: scale(0.85);
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .turnstile {
+    transform: scale(0.70);
+  }
 }
 
 .turnstile[data-ready='false'] {
-  min-height: 65px;
+  /* min-height: 65px; */
   background: color-mix(in srgb, var(--surface-subtle) 60%, transparent);
   border-radius: 8px;
 }
+
+
 
 .footer {
   display: flex;

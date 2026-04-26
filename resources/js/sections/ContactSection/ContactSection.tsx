@@ -61,10 +61,9 @@ export function ContactSection() {
           </div>
         </Reveal>
 
-        <div className={styles.formCard}>
+        <Reveal delay={120} variant="slide-right" className={styles.formCard}>
           <ContactForm />
-        </div> 
-          
+        </Reveal>
       </div>
     </section>
   );
