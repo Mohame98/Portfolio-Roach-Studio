@@ -55,14 +55,14 @@ class SubmitContactForm
                 return $submission;
             }
 
-            // Queue (don't send) — Gmail SMTP can take 2–30s and must not
-            // block the HTTP response. The `mail_sent` flag is left false
-            // here; the queue worker flips it after successful delivery via
-            // `MarkContactSubmissionMailed` (wired in an `$afterCommit`
-            // listener on the Mailable if needed). For now it's just a best-
-            // effort flag — the persisted row is the source of truth.
+            // Hostinger shared hosting does not guarantee a long-running queue
+            // worker, and cron failures are otherwise invisible to the visitor.
+            // Send the owner notification immediately so SMTP failures return a
+            // real 500 instead of leaving a job stranded in the database queue.
             Mail::to($ownerEmail, (string) config('services.contact.owner_name'))
-                ->queue(new ContactSubmissionMail($submission));
+                ->send(new ContactSubmissionMail($submission));
+
+            $submission->forceFill(['mail_sent' => true])->save();
 
             return $submission;
         });
@@ -87,3 +87,4 @@ class SubmitContactForm
         return mb_substr($value, 0, $max);
     }
 }
+

@@ -6,7 +6,6 @@ namespace App\Mail;
 
 use App\Models\ContactSubmission;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
@@ -14,12 +13,9 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Queued so Gmail SMTP's 2–30s handshake never blocks the HTTP response. The
- * `database` queue driver keeps jobs durable across restarts — run one
- * `php artisan queue:work` process (or a scheduled `queue:work --once`) to
- * flush. Jobs retry up to `tries` times before landing in `failed_jobs`.
+ * Owner notification for portfolio contact submissions.
  */
-class ContactSubmissionMail extends Mailable implements ShouldQueue
+class ContactSubmissionMail extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -83,3 +79,4 @@ class ContactSubmissionMail extends Mailable implements ShouldQueue
         };
     }
 }
+
