@@ -26,12 +26,12 @@ export function ProjectVisual({ image, title, compact }: ProjectVisualProps) {
       }}
     >
       <div className={styles.chrome} aria-hidden="true">
-        <span className={styles.dots}>
-          <span className={styles.dot} />
-          <span className={styles.dot} />
-          <span className={styles.dot} />
+        <span className={styles.browserControls}>
+          <BrowserIcon type="back" />
+          <BrowserIcon type="forward" />
+          <BrowserIcon type="reload" />
         </span>
-        <span className={styles.urlbar}>{title.toLowerCase()}</span>
+        <span className={styles.urlbar}>{title}</span>
       </div>
 
       <div className={[styles.canvas, hasImage ? styles.canvasImage : ''].join(' ')}>
@@ -55,6 +55,44 @@ export function ProjectVisual({ image, title, compact }: ProjectVisualProps) {
 
       {!compact && <figcaption className={styles.caption}>{image.caption}</figcaption>}
     </figure>
+  );
+}
+
+function BrowserIcon({ type }: { type: 'back' | 'forward' | 'reload' }) {
+  if (type === 'reload') {
+    return (
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+        <path d="M21 3v6h-6" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      style={{ transform: type === 'forward' ? 'rotate(180deg)' : undefined }}
+    >
+      <path d="M15 18 9 12l6-6" />
+    </svg>
   );
 }
 

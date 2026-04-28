@@ -95,7 +95,7 @@ export default function UsersIndex({ users, assignable_roles }: UsersIndexProps)
       </div>
 
       <div className={styles.tableWrap}>
-        <table className={styles.table}>
+        <table className={styles.table} data-admin-table>
           <thead>
             <tr>
               <th>Name</th>
@@ -113,11 +113,11 @@ export default function UsersIndex({ users, assignable_roles }: UsersIndexProps)
 
               return (
                 <tr key={u.id} data-deleted={u.deleted_at ? 'true' : undefined}>
-                  <td>
+                  <td data-label="Name">
                     <span className={styles.name}>{u.name}</span>
                     {u.is_self ? <span className={styles.youBadge}>you</span> : null}
                   </td>
-                  <td>
+                  <td data-label="Email">
                     <a
                       href={`mailto:${u.email}`}
                       className={styles.emailLink}
@@ -126,7 +126,7 @@ export default function UsersIndex({ users, assignable_roles }: UsersIndexProps)
                       {u.email}
                     </a>
                   </td>
-                  <td>
+                  <td data-label="Role">
                     {u.is_self ? (
                       <span className={styles.roleBadge} data-role={u.role}>{u.role_label}</span>
                     ) : (
@@ -142,18 +142,18 @@ export default function UsersIndex({ users, assignable_roles }: UsersIndexProps)
                       </select>
                     )}
                   </td>
-                  <td>
+                  <td data-label="Status">
                     <span className={styles.statusPill} data-tone={status.tone}>{status.label}</span>
                   </td>
-                  <td className={styles.muted}>
+                  <td className={styles.muted} data-label="Invited by">
                     {u.invited_by ? u.invited_by.name : '—'}
                   </td>
-                  <td className={styles.muted}>
+                  <td className={styles.muted} data-label="Joined">
                     {u.created_at
                       ? new Date(u.created_at).toLocaleDateString(undefined, { dateStyle: 'medium' })
                       : '—'}
                   </td>
-                  <td className={styles.actions}>
+                  <td className={styles.actions} data-label="Actions">
                     {u.is_self ? (
                       <span className={styles.muted}>—</span>
                     ) : u.deleted_at ? (

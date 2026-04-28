@@ -132,7 +132,7 @@ export default function InvitationsIndex({ invitations, assignable_roles, defaul
       </section>
 
       <div className={styles.tableWrap}>
-        <table className={styles.table}>
+        <table className={styles.table} data-admin-table>
           <thead>
             <tr>
               <th>Email</th>
@@ -152,25 +152,25 @@ export default function InvitationsIndex({ invitations, assignable_roles, defaul
             ) : (
               invitations.data.map((inv) => (
                 <tr key={inv.id}>
-                  <td className={styles.metaPrimary}>{inv.email}</td>
-                  <td>{inv.role_label}</td>
-                  <td>
+                  <td className={styles.metaPrimary} data-label="Email">{inv.email}</td>
+                  <td data-label="Role">{inv.role_label}</td>
+                  <td data-label="Status">
                     <span className={styles.statusPill} data-tone={STATUS_TONE[inv.status]}>
                       {inv.status}
                     </span>
                   </td>
-                  <td className={styles.muted}>
+                  <td className={styles.muted} data-label="Expires">
                     {inv.expires_at
                       ? new Date(inv.expires_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
                       : '—'}
                   </td>
-                  <td className={styles.muted}>{inv.creator?.name ?? '—'}</td>
-                  <td className={styles.muted}>
+                  <td className={styles.muted} data-label="Invited by">{inv.creator?.name ?? '—'}</td>
+                  <td className={styles.muted} data-label="Accepted by">
                     {inv.accepted_user ? (
                       <Link href="/admin/users" className={styles.subLink}>{inv.accepted_user.name}</Link>
                     ) : '—'}
                   </td>
-                  <td className={styles.actions}>
+                  <td className={styles.actions} data-label="Actions">
                     {inv.status === 'pending' ? (
                       <button type="button" className={styles.actionDanger} onClick={() => revoke(inv)}>
                         Revoke

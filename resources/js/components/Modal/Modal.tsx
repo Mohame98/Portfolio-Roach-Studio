@@ -38,44 +38,82 @@ export function Modal({
   const headingId = useId();
   const panelRef = useRef<HTMLDivElement | null>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
+  const scrollYRef = useRef(0);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+return;
+}
 
     restoreFocusRef.current = document.activeElement as HTMLElement;
+    scrollYRef.current = window.scrollY;
+    const previousBodyStyles = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      left: document.body.style.left,
+      right: document.body.style.right,
+      width: document.body.style.width,
+      overflow: document.body.style.overflow,
+    };
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+
     document.body.dataset.modalOpen = 'true';
+    document.documentElement.dataset.modalOpen = 'true';
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollYRef.current}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.stopPropagation();
         onClose();
+
         return;
       }
+
       if (e.key === 'ArrowLeft' && onPrev && !e.defaultPrevented) {
         const tag = (e.target as HTMLElement)?.tagName;
+
         if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
           onPrev();
+
           return;
         }
       }
+
       if (e.key === 'ArrowRight' && onNext && !e.defaultPrevented) {
         const tag = (e.target as HTMLElement)?.tagName;
+
         if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
           onNext();
+
           return;
         }
       }
+
       if (e.key === 'Tab') {
         const panel = panelRef.current;
-        if (!panel) return;
+
+        if (!panel) {
+return;
+}
+
         const nodes = panel.querySelectorAll<HTMLElement>(FOCUSABLE);
+
         if (nodes.length === 0) {
           e.preventDefault();
           panel.focus();
+
           return;
         }
+
         const first = nodes[0];
         const last = nodes[nodes.length - 1];
+
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
           last.focus();
@@ -94,19 +132,35 @@ export function Modal({
       document.removeEventListener('keydown', onKey);
       cancelAnimationFrame(raf);
       delete document.body.dataset.modalOpen;
+      delete document.documentElement.dataset.modalOpen;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.position = previousBodyStyles.position;
+      document.body.style.top = previousBodyStyles.top;
+      document.body.style.left = previousBodyStyles.left;
+      document.body.style.right = previousBodyStyles.right;
+      document.body.style.width = previousBodyStyles.width;
+      document.body.style.overflow = previousBodyStyles.overflow;
+      window.scrollTo(0, scrollYRef.current);
       restoreFocusRef.current?.focus?.();
     };
   }, [open, onClose, onPrev, onNext]);
 
   const onBackdropClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (e.target === e.currentTarget) onClose();
+      if (e.target === e.currentTarget) {
+onClose();
+}
     },
     [onClose],
   );
 
-  if (!open) return null;
-  if (typeof document === 'undefined') return null;
+  if (!open) {
+return null;
+}
+
+  if (typeof document === 'undefined') {
+return null;
+}
 
   return createPortal(
     <div

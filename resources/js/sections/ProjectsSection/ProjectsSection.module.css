@@ -93,7 +93,7 @@
   }
 }
 
-@media (hover: none) {
+@media (max-width: 719px), (hover: none) {
   .keyHint {
     display: none;
   }

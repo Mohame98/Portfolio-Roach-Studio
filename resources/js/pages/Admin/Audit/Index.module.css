@@ -27,6 +27,22 @@
   margin-bottom: 16px;
 }
 
+@media (max-width: 350px) {
+  .filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .field {
+    min-width: 0;
+  }
+
+  .primary,
+  .ghost {
+    width: 100%;
+  }
+}
+
 .field { display: flex; flex-direction: column; gap: 4px; min-width: 220px; }
 .label { font-size: 12.5px; font-weight: 500; color: var(--text-muted); }
 

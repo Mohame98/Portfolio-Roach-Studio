@@ -47,12 +47,14 @@
   justify-content: space-between;
   gap: var(--space-4);
   height: 68px;
+  min-width: 0;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
   color: var(--text);
   font-weight: 600;
   letter-spacing: -0.015em;
@@ -147,7 +149,7 @@
 .navPreview {
   position: absolute;
   top: calc(100% + 16px);
-  left: 154%;
+  left: 80%;
   width: 260px;
 
   transform: translateX(-50%) translateY(6px);
@@ -221,6 +223,7 @@
 }
 
 .previewImage {
+  display: block;
   width: 104px;
   height: 100px;
   overflow: hidden;
@@ -233,6 +236,13 @@
   height: 100%;
   object-fit: fit;
   display: block;
+  transition: transform var(--dur-base) var(--ease-out);
+  transform-origin: center;
+}
+
+.previewImage:hover img,
+.previewImage:focus-visible img {
+  transform: scale(1.06);
 }
 
 /* large “View case >” style row */
@@ -258,9 +268,24 @@
   font-weight: 500;
 }
 
+.previewMainLink span,
+.previewAllLink span {
+  display: inline-flex;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
 .previewMainLink:hover,
-.previewAllLink:hover {
+.previewMainLink:focus-visible,
+.previewAllLink:hover,
+.previewAllLink:focus-visible {
   color: var(--text);
+}
+
+.previewMainLink:hover span,
+.previewMainLink:focus-visible span,
+.previewAllLink:hover span,
+.previewAllLink:focus-visible span {
+  transform: translateX(4px);
 }
 
 /* ---------- Right-side actions ---------- */
@@ -269,6 +294,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  flex: 0 0 auto;
 }
 
 .cta {
@@ -350,6 +376,16 @@
 
 @media (min-width: 720px) {
   .menuToggle {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .inner {
+    gap: var(--space-2);
+  }
+
+  .cta {
     display: none;
   }
 }

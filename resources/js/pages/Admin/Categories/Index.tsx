@@ -92,7 +92,7 @@ export default function CategoriesIndex({ categories }: CategoriesIndexProps) {
 
       <div className={styles.grid}>
         <section className={styles.tableWrap}>
-          <table className={styles.table}>
+          <table className={styles.table} data-admin-table>
             <thead>
               <tr>
                 <th>Name</th>
@@ -111,17 +111,17 @@ export default function CategoriesIndex({ categories }: CategoriesIndexProps) {
               ) : (
                 categories.map((c) => (
                   <tr key={c.id}>
-                    <td>
+                    <td data-label="Name">
                       <span className={styles.catPill} style={{ ['--pill' as string]: c.accent }}>{c.name}</span>
                     </td>
-                    <td className={styles.muted}><code>{c.slug}</code></td>
-                    <td>
+                    <td className={styles.muted} data-label="Slug"><code>{c.slug}</code></td>
+                    <td data-label="Accent">
                       <span className={styles.swatch} style={{ background: c.accent }} />
                       <span className={styles.muted}> {c.accent}</span>
                     </td>
-                    <td className={styles.muted}>{c.sort_order}</td>
-                    <td className={styles.muted}>{c.post_count}</td>
-                    <td className={styles.actions}>
+                    <td className={styles.muted} data-label="Order">{c.sort_order}</td>
+                    <td className={styles.muted} data-label="Posts">{c.post_count}</td>
+                    <td className={styles.actions} data-label="Actions">
                       <button type="button" className={styles.actionLink} onClick={() => startEdit(c)}>Edit</button>
                       <button type="button" className={styles.actionDanger} onClick={() => destroy(c)}>Delete</button>
                     </td>

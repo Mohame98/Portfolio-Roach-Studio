@@ -6,6 +6,10 @@ import { useTranslation } from '@/i18n/LanguageProvider';
 import type { SharedProps } from '@/types';
 import styles from './Header.module.css';
 
+const FEATURED_PROJECT_ID = 'outcastbrands';
+const FEATURED_PROJECT_HREF = `/#projects/${FEATURED_PROJECT_ID}`;
+const FEATURED_BLOG_HREF = '/blog/shipping-a-portfolio-that-feels-like-software';
+
 /** Inertia navigates for paths that stay inside the app (e.g. /blog),
  *  but hash anchors inside the current document need a plain <a>. */
 type NavLinkProps = {
@@ -50,6 +54,19 @@ export function Header() {
   // `#projects` to the current URL.
   const isHome = url === '/' || url.startsWith('/?') || url.startsWith('/#');
   const sectionHref = (hash: string) => (isHome ? hash : `/${hash}`);
+
+  const openFeaturedProject = (event: React.MouseEvent<Element>) => {
+    if (!isHome) {
+return;
+}
+
+    event.preventDefault();
+    window.dispatchEvent(
+      new CustomEvent('portfolio:open-project', {
+        detail: { id: FEATURED_PROJECT_ID },
+      }),
+    );
+  };
 
   const navLinks = useMemo(
     () => [
@@ -149,12 +166,13 @@ return;
                     <div className={styles.previewCard}>
                       <div className={styles.previewTop}>
                         <span className={styles.previewLabel}>
-                          {link.href === '/blog' ? 'Featured Post' : 'Projects'}
+                          {link.href === '/blog' ? 'Featured Blog' : 'Featured Project'}
                         </span>
 
                         <NavLink
-                          href={link.href}
+                          href={isBlog ? FEATURED_BLOG_HREF : FEATURED_PROJECT_HREF}
                           className={styles.previewImage}
+                          onClick={isBlog ? undefined : openFeaturedProject}
                         >
                           <img
                             src={
@@ -167,14 +185,18 @@ return;
                         </NavLink>
                       </div>
 
-                      <NavLink href={link.href} className={styles.previewMainLink}>
-                        {link.href === '/blog' ? 'View blog' : 'View Projects'}
+                      <NavLink
+                        href={isBlog ? FEATURED_BLOG_HREF : FEATURED_PROJECT_HREF}
+                        className={styles.previewMainLink}
+                        onClick={isBlog ? undefined : openFeaturedProject}
+                      >
+                        {link.href === '/blog' ? 'View Blog' : 'View Project'}
                         <span aria-hidden="true">›</span>
                       </NavLink>
                     </div>
 
                     <NavLink href={link.href} className={styles.previewAllLink}>
-                      {link.href === '/blog' ? 'All posts' : 'Open Projects'}
+                      {link.href === '/blog' ? 'All Blog Posts' : 'All Projects'}
                       <span aria-hidden="true">›</span>
                     </NavLink>
                   </div>
@@ -255,5 +277,3 @@ return;
     </header>
   );
 }
-
-

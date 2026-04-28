@@ -10,6 +10,8 @@ html,
 body {
   margin: 0;
   padding: 0;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 html {
@@ -96,7 +98,6 @@ body {
   background-image: var(--grad-page);
   background-repeat: no-repeat;
   background-attachment: fixed;
-  overflow-x: hidden;
   position: relative;
 }
 
@@ -105,11 +106,16 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
-/* Body becomes non-scrollable when a modal is open */
+/* Document becomes non-scrollable when a modal is open. The modal panel owns
+ * its own internal scroll, while the page behind it is frozen in place. */
+html[data-modal-open='true'],
 body[data-modal-open='true'] {
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 img,
@@ -203,6 +209,7 @@ textarea {
   max-width: var(--container-max);
   margin-inline: auto;
   padding-inline: var(--container-gutter);
+  min-width: 0;
 }
 
 /* Subtle grid underlay for sections */
@@ -427,4 +434,111 @@ textarea {
 [data-sonner-toaster] [data-sonner-toast] [data-close-button]:hover {
   opacity: 1;
   background: color-mix(in srgb, currentColor 14%, transparent);
+}
+
+/* Admin tables become compact cards on phones. The table semantics remain in
+ * the DOM, while data-label attributes provide readable row labels visually. */
+@media (max-width: 720px) {
+  [data-admin-table],
+  [data-admin-table] thead,
+  [data-admin-table] tbody,
+  [data-admin-table] tr,
+  [data-admin-table] th,
+  [data-admin-table] td {
+    display: block;
+  }
+
+  [data-admin-table] {
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 0;
+  }
+
+  [data-admin-table] thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  [data-admin-table] tbody {
+    display: grid;
+    gap: 12px;
+    padding: 10px;
+  }
+
+  [data-admin-table] tbody tr {
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--surface) 72%, transparent);
+  }
+
+  [data-admin-table] tbody tr:hover {
+    background: var(--surface);
+  }
+
+  [data-admin-table] tbody td {
+    display: grid;
+    grid-template-columns: minmax(84px, 0.38fr) minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    text-align: left;
+  }
+
+  [data-admin-table] tbody td::before {
+    content: attr(data-label);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    padding-top: 2px;
+  }
+
+  [data-admin-table] tbody td[colspan] {
+    display: block;
+  }
+
+  [data-admin-table] tbody td[colspan]::before {
+    display: none;
+  }
+
+  [data-admin-table] tbody td > * {
+    min-width: 0;
+  }
+
+  [data-admin-table] tbody td[data-label='Actions'] {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  [data-admin-table] tbody td[data-label='Actions']::before {
+    flex: 0 0 100%;
+  }
+
+  [data-admin-table] tbody td a,
+  [data-admin-table] tbody td code,
+  [data-admin-table] tbody td pre {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 420px) {
+  [data-admin-table] tbody td {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
 }

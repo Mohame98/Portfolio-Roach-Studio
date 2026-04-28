@@ -4,6 +4,7 @@
   color: var(--text);
   display: flex;
   flex-direction: column;
+  overflow-x: clip;
 }
 
 .bar {
@@ -25,12 +26,14 @@
   padding: 0 clamp(16px, 3vw, 24px);
   max-width: var(--container-max);
   margin: 0 auto;
+  min-width: 0;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  flex: 0 0 auto;
   color: var(--text);
   font-weight: 600;
   font-size: 14px;
@@ -52,6 +55,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .userMeta {
@@ -156,6 +160,7 @@
   max-width: var(--container-max);
   margin: 0 auto;
   width: 100%;
+  min-width: 0;
 }
 
 .sidebar {
@@ -169,14 +174,18 @@
   gap: 2px;
   position: sticky;
   top: 80px;
+  min-width: 0;
 }
 
 .navLink {
+  display: flex;
+  align-items: center;
   padding: 8px 14px;
   font-size: 13.5px;
   color: var(--text-muted);
   text-decoration: none;
   border-radius: var(--radius-sm);
+  white-space: nowrap;
   transition:
     color var(--dur-fast) var(--ease-out),
     background-color var(--dur-fast) var(--ease-out);
@@ -200,29 +209,92 @@
 }
 
 .container {
-  padding: 0 clamp(16px, 3vw, 24px);
+  padding: 0 clamp(5px, 3vw, 0px);
   min-width: 0;
 }
 
 @media (max-width: 800px) {
+  .bar {
+    position: sticky;
+  }
+
+  .barInner {
+    height: auto;
+    min-height: 60px;
+    padding: 10px 14px;
+  }
+
+  .user {
+    gap: 6px;
+  }
+
+  .userMeta {
+    display: none;
+  }
+
+  .viewSite,
+  .logout {
+    padding: 7px 10px;
+    font-size: 12.5px;
+  }
+
   .body {
     grid-template-columns: 1fr;
   }
 
   .sidebar {
+    position: sticky;
+    top: 60px;
+    z-index: 30;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
     border-right: 0;
     border-bottom: 1px solid var(--border);
     padding: 12px 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .sidebar::-webkit-scrollbar {
+    display: none;
   }
 
   .nav {
     position: static;
     flex-direction: row;
-    overflow-x: auto;
     gap: 2px;
+    width: max-content;
+    min-width: 100%;
   }
 
-  .userName {
+  .navLink {
+    padding: 8px 12px;
+    border: 1px solid transparent;
+  }
+
+  .navLink[data-active='true'] {
+    border-color: var(--border);
+  }
+}
+
+@media (max-width: 420px) {
+  .brand span:last-child {
     display: none;
+  }
+
+  .barInner {
+    gap: 8px;
+  }
+
+  .viewSite,
+  .logout {
+    padding-inline: 8px;
+    font-size: 12px;
+  }
+
+  .container {
+    padding-inline: 12px;
   }
 }

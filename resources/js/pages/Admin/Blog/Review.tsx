@@ -73,7 +73,7 @@ export default function ReviewQueue({ posts }: ReviewQueueProps) {
         </div>
       ) : (
         <div className={styles.tableWrap}>
-          <table className={styles.table}>
+          <table className={styles.table} data-admin-table>
             <thead>
               <tr>
                 <th>Title</th>
@@ -86,12 +86,12 @@ export default function ReviewQueue({ posts }: ReviewQueueProps) {
             <tbody>
               {posts.data.map((p) => (
                 <tr key={p.id}>
-                  <td>
+                  <td data-label="Title">
                     <Link href={`/admin/blog-posts/${p.slug}/edit`} className={styles.titleLink}>
                       {p.title}
                     </Link>
                   </td>
-                  <td>
+                  <td data-label="Author">
                     {p.author ? (
                       <span className={styles.authorCell}>
                         <span className={styles.authorName}>{p.author.name}</span>
@@ -101,19 +101,19 @@ export default function ReviewQueue({ posts }: ReviewQueueProps) {
                       </span>
                     ) : <span className={styles.muted}>—</span>}
                   </td>
-                  <td>
+                  <td data-label="Category">
                     {p.category ? (
                       <span className={styles.catPill} style={{ ['--pill' as string]: p.category.accent }}>
                         {p.category.name}
                       </span>
                     ) : <span className={styles.muted}>—</span>}
                   </td>
-                  <td className={styles.muted}>
+                  <td className={styles.muted} data-label="Submitted">
                     {p.submitted_at
                       ? new Date(p.submitted_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
                       : '—'}
                   </td>
-                  <td className={styles.actions}>
+                  <td className={styles.actions} data-label="Actions">
                     <Link href={`/admin/blog-posts/${p.slug}/edit`} className={styles.actionLink}>
                       Open
                     </Link>

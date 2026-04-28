@@ -72,7 +72,7 @@ export default function AuditIndex({ logs, actions, filters }: AuditIndexProps) 
       </form>
 
       <div className={styles.tableWrap}>
-        <table className={styles.table}>
+        <table className={styles.table} data-admin-table>
           <thead>
             <tr>
               <th>When</th>
@@ -91,12 +91,12 @@ export default function AuditIndex({ logs, actions, filters }: AuditIndexProps) 
             ) : (
               logs.data.map((row) => (
                 <tr key={row.id}>
-                  <td className={styles.muted}>
+                  <td className={styles.muted} data-label="When">
                     {row.created_at
                       ? new Date(row.created_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'medium' })
                       : '—'}
                   </td>
-                  <td>
+                  <td data-label="Actor">
                     {row.actor ? (
                       <span className={styles.actor}>
                         <span className={styles.actorName}>{row.actor.name}</span>
@@ -106,18 +106,18 @@ export default function AuditIndex({ logs, actions, filters }: AuditIndexProps) 
                       </span>
                     ) : <span className={styles.muted}>system</span>}
                   </td>
-                  <td><code className={styles.action}>{row.action}</code></td>
-                  <td className={styles.muted}>
+                  <td data-label="Action"><code className={styles.action}>{row.action}</code></td>
+                  <td className={styles.muted} data-label="Target">
                     {row.auditable_type
                       ? `${shortType(row.auditable_type)}#${row.auditable_id}`
                       : '—'}
                   </td>
-                  <td>
+                  <td data-label="Details">
                     {row.metadata && Object.keys(row.metadata).length > 0 ? (
                       <pre className={styles.metadata}>{JSON.stringify(row.metadata, null, 2)}</pre>
                     ) : <span className={styles.muted}>—</span>}
                   </td>
-                  <td className={styles.muted}><code>{row.ip_address ?? '—'}</code></td>
+                  <td className={styles.muted} data-label="IP"><code>{row.ip_address ?? '—'}</code></td>
                 </tr>
               ))
             )}

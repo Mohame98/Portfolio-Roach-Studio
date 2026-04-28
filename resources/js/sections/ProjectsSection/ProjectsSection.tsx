@@ -10,6 +10,43 @@ import { useTranslation } from '@/i18n/LanguageProvider';
 import type { Project } from '@/types';
 import styles from './ProjectsSection.module.css';
 
+const OPEN_PROJECT_EVENT = 'portfolio:open-project';
+const PROJECT_QUERY_PARAM = 'project';
+const PROJECT_HASH_PREFIX = '#projects/';
+
+type ProjectUrlMode = 'push' | 'replace';
+
+function projectHash(projectId: string) {
+  return `${PROJECT_HASH_PREFIX}${projectId}`;
+}
+
+function projectIdFromUrl() {
+  const queryProjectId = new URLSearchParams(window.location.search).get(
+    PROJECT_QUERY_PARAM,
+  );
+
+  if (queryProjectId) {
+    return queryProjectId;
+  }
+
+  return window.location.hash.startsWith(PROJECT_HASH_PREFIX)
+    ? window.location.hash.slice(PROJECT_HASH_PREFIX.length)
+    : null;
+}
+
+function updateProjectUrl(projectId: string, mode: ProjectUrlMode = 'push') {
+  const url = new URL(window.location.href);
+  url.searchParams.delete(PROJECT_QUERY_PARAM);
+  url.hash = projectHash(projectId);
+  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+
+  if (nextUrl === `${window.location.pathname}${window.location.search}${window.location.hash}`) {
+return;
+}
+
+  window.history[`${mode}State`](window.history.state, '', nextUrl);
+}
+
 export function ProjectsSection() {
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -19,19 +56,69 @@ export function ProjectsSection() {
   const [inView, setInView] = useState(false);
   const [keyHintUsed, setKeyHintUsed] = useState(false);
 
-  const handleClose = useCallback(() => setActiveIndex(null), []);
+  const openProjectById = useCallback((
+    projectId: string,
+    delayMs = 0,
+    urlMode?: ProjectUrlMode,
+  ) => {
+    const index = projects.findIndex((project) => project.id === projectId);
+
+    if (index === -1) {
+return;
+}
+
+    if (urlMode) {
+      updateProjectUrl(projectId, urlMode);
+    }
+
+    sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.setTimeout(() => setActiveIndex(index), delayMs);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setActiveIndex(null);
+
+    const url = new URL(window.location.href);
+    const hasProjectHash = url.hash.startsWith(PROJECT_HASH_PREFIX);
+
+    if (!url.searchParams.has(PROJECT_QUERY_PARAM) && !hasProjectHash) {
+return;
+}
+
+    url.searchParams.delete(PROJECT_QUERY_PARAM);
+    url.hash = 'projects';
+    window.history.replaceState(
+      window.history.state,
+      '',
+      `${url.pathname}${url.search}${url.hash}`,
+    );
+  }, []);
   const handlePrev = useCallback(
     () =>
-      setActiveIndex((i) =>
-        i === null ? null : (i - 1 + projects.length) % projects.length,
-      ),
+      setActiveIndex((i) => {
+        if (i === null) {
+return null;
+}
+
+        const nextIndex = (i - 1 + projects.length) % projects.length;
+        updateProjectUrl(projects[nextIndex].id, 'replace');
+
+        return nextIndex;
+      }),
     [],
   );
   const handleNext = useCallback(
     () =>
-      setActiveIndex((i) =>
-        i === null ? null : (i + 1) % projects.length,
-      ),
+      setActiveIndex((i) => {
+        if (i === null) {
+return null;
+}
+
+        const nextIndex = (i + 1) % projects.length;
+        updateProjectUrl(projects[nextIndex].id, 'replace');
+
+        return nextIndex;
+      }),
     [],
   );
 
@@ -89,11 +176,49 @@ carouselRef.current?.next();
     return () => window.removeEventListener('keydown', onKey);
   }, [inView, activeIndex]);
 
-  const slides = projects.map((project, i) => (
+  useEffect(() => {
+    const projectId = projectIdFromUrl();
+
+    if (projectId) {
+      openProjectById(projectId, 300, 'replace');
+    }
+
+    const onOpenProject = (event: Event) => {
+      const projectId = (event as CustomEvent<{ id?: string }>).detail?.id;
+
+      if (!projectId) {
+return;
+}
+
+      openProjectById(projectId, 200, 'push');
+    };
+
+    const onHashChange = () => {
+      const projectId = projectIdFromUrl();
+
+      if (projectId) {
+        openProjectById(projectId, 0, 'replace');
+
+        return;
+      }
+
+      setActiveIndex(null);
+    };
+
+    window.addEventListener(OPEN_PROJECT_EVENT, onOpenProject);
+    window.addEventListener('hashchange', onHashChange);
+
+    return () => {
+      window.removeEventListener(OPEN_PROJECT_EVENT, onOpenProject);
+      window.removeEventListener('hashchange', onHashChange);
+    };
+  }, [openProjectById]);
+
+  const slides = projects.map((project) => (
     <ProjectCard
       key={project.id}
       project={project}
-      onOpen={() => setActiveIndex(i)}
+      onOpen={() => openProjectById(project.id, 0, 'push')}
       t={t}
     />
   ));

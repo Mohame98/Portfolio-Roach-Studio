@@ -74,7 +74,7 @@ export default function AdminBlogIndex({ posts }: AdminBlogIndexProps) {
         </div>
       ) : (
         <div className={styles.tableWrap}>
-          <table className={styles.table}>
+          <table className={styles.table} data-admin-table>
             <thead>
               <tr>
                 <th>Title</th>
@@ -88,7 +88,7 @@ export default function AdminBlogIndex({ posts }: AdminBlogIndexProps) {
             <tbody>
               {posts.data.map((p) => (
                 <tr key={p.id}>
-                  <td>
+                  <td data-label="Title">
                     <Link
                       href={`/admin/blog-posts/${p.slug}/edit`}
                       className={styles.titleLink}
@@ -96,7 +96,7 @@ export default function AdminBlogIndex({ posts }: AdminBlogIndexProps) {
                       {p.title}
                     </Link>
                   </td>
-                  <td>
+                  <td data-label="Category">
                     {p.category ? (
                       <span
                         className={styles.catPill}
@@ -109,7 +109,7 @@ export default function AdminBlogIndex({ posts }: AdminBlogIndexProps) {
                     )}
                   </td>
                   {isEditor ? (
-                    <td>
+                    <td data-label="Author">
                       {p.author ? (
                         <span className={styles.authorCell}>
                           <span className={styles.authorName}>{p.author.name}</span>
@@ -122,12 +122,12 @@ export default function AdminBlogIndex({ posts }: AdminBlogIndexProps) {
                       )}
                     </td>
                   ) : null}
-                  <td>
+                  <td data-label="Status">
                     <span className={styles.status} data-status={p.status}>
                       {STATUS_LABELS[p.status]}
                     </span>
                   </td>
-                  <td className={styles.muted}>
+                  <td className={styles.muted} data-label="Updated">
                     {p.updated_at
                       ? new Date(p.updated_at).toLocaleString(undefined, {
                           dateStyle: 'medium',
@@ -135,7 +135,7 @@ export default function AdminBlogIndex({ posts }: AdminBlogIndexProps) {
                         })
                       : '—'}
                   </td>
-                  <td className={styles.actions}>
+                  <td className={styles.actions} data-label="Actions">
                     {p.status === 'published' ? (
                       <Link href={`/blog/${p.slug}`} className={styles.actionLink}>
                         View
