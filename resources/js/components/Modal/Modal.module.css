@@ -6,8 +6,8 @@
   place-items: center;
   padding: clamp(12px, 3vw, 40px);
   background: color-mix(in srgb, var(--bg-inset) 72%, transparent);
-  backdrop-filter: blur(10px) saturate(140%);
   -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
   animation: backdropIn var(--dur-base) var(--ease-out);
 }
 
@@ -140,8 +140,8 @@
   border: 1px solid var(--border-strong);
   border-radius: 50%;
   box-shadow: var(--shadow-md);
-  backdrop-filter: blur(10px) saturate(140%);
   -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
   transition: transform var(--dur-base) var(--ease-out),
     background var(--dur-base) var(--ease-out),
     border-color var(--dur-base) var(--ease-out);

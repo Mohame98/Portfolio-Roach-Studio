@@ -215,8 +215,8 @@
   background: color-mix(in srgb, var(--bg-elevated) 80%, transparent);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-pill);
-  backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .status {
@@ -271,8 +271,8 @@
   background: color-mix(in srgb, var(--bg-elevated) 80%, transparent);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-pill);
-  backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cardMeta {
@@ -318,8 +318,8 @@
   background: color-mix(in srgb, var(--bg-elevated) 75%, transparent);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-pill);
-  backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .techMore {

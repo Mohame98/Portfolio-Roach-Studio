@@ -160,8 +160,8 @@
   border: 1px solid var(--border-strong);
   border-radius: 50%;
   box-shadow: var(--shadow-md);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   transition: transform var(--dur-base), background var(--dur-base),
     opacity var(--dur-base);
   opacity: 0;

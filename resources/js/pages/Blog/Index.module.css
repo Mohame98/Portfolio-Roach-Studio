@@ -70,10 +70,16 @@
   position: sticky;
   top: 68px;
   z-index: 10;
+  background: rgba(10, 10, 11, 0.86);
   background: color-mix(in srgb, var(--bg) 86%, transparent);
-  backdrop-filter: saturate(140%) blur(12px);
   -webkit-backdrop-filter: saturate(140%) blur(12px);
+  backdrop-filter: saturate(140%) blur(12px);
   border-bottom: 1px solid var(--border);
+}
+
+[data-theme='light'] .filters {
+  background: rgba(250, 250, 249, 0.86);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
 }
 
 .filtersInner {
